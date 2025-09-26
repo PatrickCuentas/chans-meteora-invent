@@ -22,11 +22,7 @@ async function main() {
   const connection = new Connection(config.rpcUrl, DEFAULT_COMMITMENT_LEVEL);
   const wallet = new Wallet(keypair);
 
-  const { baseMint: baseMintArg } = parseCliArguments();
-  if (!baseMintArg) {
-    throw new Error('Please provide --baseMint flag to do this action');
-  }
-  const baseMint = new PublicKey(baseMintArg);
+  const { baseMint } = parseCliArguments();
   if (!baseMint) {
     throw new Error('Please provide --baseMint flag to do this action');
   }
@@ -38,7 +34,7 @@ async function main() {
 
   const ammProgram = createProgram(connection as any).ammProgram;
   const poolKey = deriveCustomizablePermissionlessConstantProductPoolAddress(
-    baseMint,
+    new PublicKey(baseMint),
     quoteMint,
     ammProgram.programId
   );
@@ -63,7 +59,7 @@ async function main() {
     connection,
     wallet.payer,
     poolKey,
-    baseMint,
+    new PublicKey(baseMint),
     config.stake2EarnFarm,
     config.dryRun,
     config.computeUnitPriceMicroLamports

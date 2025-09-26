@@ -26,11 +26,10 @@ async function main() {
 
   const wallet = new Wallet(keypair);
 
-  const { baseMint: baseMintArg } = parseCliArguments();
-  if (!baseMintArg) {
+  const { baseMint } = parseCliArguments();
+  if (!baseMint) {
     throw new Error('Please provide --baseMint flag to do this action');
   }
-  const baseMint = new PublicKey(baseMintArg);
 
   if (!config.quoteMint) {
     throw new Error('Missing quoteMint in configuration');
@@ -48,18 +47,18 @@ async function main() {
   let poolKey: PublicKey;
   if (poolType == PoolTypeConfig.DammV1) {
     poolKey = deriveCustomizablePermissionlessConstantProductPoolAddress(
-      baseMint,
+      new PublicKey(baseMint),
       quoteMint,
       createProgram(connection as any).ammProgram.programId
     );
   } else if (poolType == PoolTypeConfig.Dlmm) {
     [poolKey] = deriveCustomizablePermissionlessLbPair(
-      baseMint,
+      new PublicKey(baseMint),
       quoteMint,
       new PublicKey(LBCLMM_PROGRAM_IDS['mainnet-beta'])
     );
   } else if (poolType == PoolTypeConfig.DammV2) {
-    poolKey = deriveCustomizablePoolAddress(baseMint, quoteMint);
+    poolKey = deriveCustomizablePoolAddress(new PublicKey(baseMint), quoteMint);
   } else {
     throw new Error(`Invalid pool type ${poolType}`);
   }
@@ -71,7 +70,7 @@ async function main() {
     quoteMint: quoteMint.toString(),
   };
 
-  await createAlphaVault(connection, wallet, alphaVaultConfig, poolKey, baseMint);
+  await createAlphaVault(connection, wallet, alphaVaultConfig, poolKey, new PublicKey(baseMint));
 }
 
 main();
