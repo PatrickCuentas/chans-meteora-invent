@@ -24,21 +24,20 @@ async function main() {
 
   const connection = new Connection(config.rpcUrl, DEFAULT_COMMITMENT_LEVEL);
 
-  const { baseMint: baseMintArg } = parseCliArguments();
-  if (!baseMintArg) {
-    throw new Error('Please provide --baseMint flag to do this action');
-  }
-  const baseMint = new PublicKey(baseMintArg);
+  const { baseMint } = parseCliArguments();
   if (!baseMint) {
     throw new Error('Please provide --baseMint flag to do this action');
   }
 
-  const baseMintAccount = await connection.getAccountInfo(baseMint, connection.commitment);
+  const baseMintAccount = await connection.getAccountInfo(
+    new PublicKey(baseMint),
+    connection.commitment
+  );
   if (!baseMintAccount) {
     throw new Error(`Base mint account not found: ${baseMint}`);
   }
 
-  const baseMintState = unpackMint(baseMint, baseMintAccount, baseMintAccount.owner);
+  const baseMintState = unpackMint(new PublicKey(baseMint), baseMintAccount, baseMintAccount.owner);
   const baseDecimals = baseMintState.decimals;
 
   if (!config.quoteMint) {
@@ -50,7 +49,7 @@ async function main() {
   console.log(`- Using quote token mint ${quoteMint.toString()}`);
 
   const [poolKey] = deriveCustomizablePermissionlessLbPair(
-    baseMint,
+    new PublicKey(baseMint),
     quoteMint,
     new PublicKey(LBCLMM_PROGRAM_IDS['mainnet-beta'])
   );
@@ -83,7 +82,7 @@ async function main() {
     operatorKeypair,
     positionOwner,
     feeOwner,
-    baseMint,
+    new PublicKey(baseMint),
     quoteMint,
     seedAmount,
     curvature,

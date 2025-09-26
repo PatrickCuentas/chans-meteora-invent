@@ -16,11 +16,7 @@ async function main() {
 
   const connection = new Connection(config.rpcUrl, DEFAULT_COMMITMENT_LEVEL);
 
-  const { baseMint: baseMintArg } = parseCliArguments();
-  if (!baseMintArg) {
-    throw new Error('Please provide --baseMint flag to do this action');
-  }
-  const baseMint = new PublicKey(baseMintArg);
+  const { baseMint } = parseCliArguments();
   if (!baseMint) {
     throw new Error('Please provide --baseMint flag to do this action');
   }
@@ -40,7 +36,7 @@ async function main() {
   await lockLiquidity(
     connection,
     keypair,
-    baseMint,
+    new PublicKey(baseMint),
     quoteMint,
     config.dammV1LockLiquidity.allocations,
     config.dryRun,
