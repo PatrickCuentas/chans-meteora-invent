@@ -101,7 +101,13 @@
     "migrationFee": {
       "feePercentage": 0, // Percentage of fee taken from migration quote threshold once pool migrates (0% to 50%)
       "creatorFeePercentage": 0 // Percentage of the migrationFee.feePercentage claimable by creator (0% to 100%)
-    },
+    }
+    // "migratedPoolFee": {
+    //   // Configure only when migrationOption = MET_DAMM_V2 (1) and migrationFeeOption = Customizable (6)
+    //   "collectFeeMode": 0, // 0 - Quote Token | 1 - Output Token
+    //   "dynamicFee": 0, // 0: Disabled, 1: Enabled
+    //   "poolFeeBps": 0 // The pool fee in basis points. Minimum 10, Maximum 1000 bps.
+    // },
     "leftoverReceiver": "Dc85YcHkAWs62ndssWcGN5V4xYaQzPzgUDiRGtvnZas6", // leftover receiver address
     "feeClaimer": "Dc85YcHkAWs62ndssWcGN5V4xYaQzPzgUDiRGtvnZas6" // fee claimer address
   },
