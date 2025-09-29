@@ -13,7 +13,9 @@
 
   /* quoteMint is required for the following actions:
    * 1. damm-v1-create-pool
-   * 2. damm-v1-lock-liquidity
+   * 2. damm-v1-create-stake2earn-farm
+   * 3. damm-v1-lock-liquidity
+   * 4. damm-v1-lock-liquidity-stake2earn
    * SOL: So11111111111111111111111111111111111111112 | USDC: EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v | any other token address
    */
   "quoteMint": "So11111111111111111111111111111111111111112",
@@ -25,8 +27,8 @@
     "supply": 1000000000, // total amount of base token to be minted
     "decimals": 6, // decimals of the base token
     // "tokenMintKeypairFilePath": "./mint-keypair.json", // path to token mint keypair if you have a specific keypair for the token mint. If not provided, a new keypair will be generated.
-    "name": "Test Token", // token name
-    "symbol": "TT", // token symbol
+    "name": "YOUR_TOKEN_NAME", // token name
+    "symbol": "YOUR_TOKEN_SYMBOL", // token symbol
     "authorities": {
       "mint": "YOUR_MINT_AUTHORITY_ADDRESS", // token mint authority address. <PublicKey | null>
       "freeze": "YOUR_FREEZE_AUTHORITY_ADDRESS", // token freeze authority address. <PublicKey | null>

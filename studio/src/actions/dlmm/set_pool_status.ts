@@ -28,14 +28,11 @@ async function main() {
     throw new Error('Missing setDlmmPoolStatus in configuration');
   }
 
-  const { poolAddress: poolAddressArg } = parseCliArguments();
-  if (!poolAddressArg) {
+  const { poolAddress: poolKey } = parseCliArguments();
+  if (!poolKey) {
     throw new Error('Please provide --poolAddress flag to do this action');
   }
-  const poolAddress = new PublicKey(poolAddressArg);
-  if (!poolAddress) {
-    throw new Error('Please provide --poolAddress flag to do this action');
-  }
+  const poolAddress = new PublicKey(poolKey);
 
   const enabled = config.setDlmmPoolStatus.enabled;
 

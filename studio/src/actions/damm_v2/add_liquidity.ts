@@ -18,14 +18,11 @@ async function main() {
   const connection = new Connection(config.rpcUrl, DEFAULT_COMMITMENT_LEVEL);
   const wallet = new Wallet(keypair);
 
-  const { poolAddress: poolAddressArg } = parseCliArguments();
-  if (!poolAddressArg) {
+  const { poolAddress: poolKey } = parseCliArguments();
+  if (!poolKey) {
     throw new Error('Please provide --poolAddress flag to do this action');
   }
-  const poolAddress = new PublicKey(poolAddressArg);
-  if (!poolAddress) {
-    throw new Error('Please provide --poolAddress flag to do this action');
-  }
+  const poolAddress = new PublicKey(poolKey);
 
   console.log(`- Using pool address ${poolAddress.toString()}`);
 

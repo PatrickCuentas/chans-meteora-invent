@@ -27,8 +27,8 @@ async function main() {
   const wallet = new Wallet(keypair);
 
   let baseMint: PublicKey;
-  const { baseMint: baseMintArg } = parseCliArguments();
-  if (!baseMintArg) {
+  const { baseMint: baseMintKey } = parseCliArguments();
+  if (!baseMintKey) {
     if (!config.createBaseToken) {
       throw new Error(
         'Please either provide --baseMint flag in cli or createBaseToken in configuration to do this action'
@@ -40,7 +40,7 @@ async function main() {
       tokenConfig: config.createBaseToken,
     });
   } else {
-    baseMint = new PublicKey(baseMintArg);
+    baseMint = new PublicKey(baseMintKey);
   }
 
   if (!config.quoteMint) {
