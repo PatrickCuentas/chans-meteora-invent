@@ -6,7 +6,7 @@
   "dryRun": false,
 
   /* keypairFilePath is required and will be the payer + signer for all transactions */
-  "keypairFilePath": "./keypair.json",
+  "keypairFilePath": "/home/chans/Launchpad/meteora-invent/studio/config/keypair.json",
 
   /* computeUnitPriceMicroLamports is required and can be adjusted to fit your needs */
   "computeUnitPriceMicroLamports": 100000,
@@ -18,7 +18,19 @@
    */
   "quoteMint": "So11111111111111111111111111111111111111112",
 
-  /* dbcConfig is only used in the following actions:
+  /* baseMint is required for the following actions:
+   * 1. dbc-swap (Buy or Sell)
+   * 2. dbc-migrate-damm-v1
+   * 3. dbc-migrate-damm-v2
+   */
+  "baseMint": "YrwwNgk4jUtr9qLe52oPMefU44gyKQUNPTuPjEA59PW", //YrwwNgk4jUtr9qLe52oPMefU44gyKQUNPTuPjEA59PW
+
+  /* Either use dbcConfigAddress or dbcConfig, but not both.
+   *
+   * dbcConfigAddress is only used in the following action:
+   * 1. dbc-create-pool (if the dbcConfigAddress is already created)
+   *
+   * dbcConfig is only used in the following actions:
    * 1. dbc-create-config
    * 2. dbc-create-pool (if there is no --config flag indicated in the command)
    */

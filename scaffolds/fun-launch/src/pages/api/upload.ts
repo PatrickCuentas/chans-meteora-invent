@@ -7,6 +7,7 @@ import { DynamicBondingCurveClient } from '@meteora-ag/dynamic-bonding-curve-sdk
 const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID as string;
 const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY as string;
 const R2_ACCOUNT_ID = process.env.R2_ACCOUNT_ID as string;
+const R2_PUBLIC_DEVELOP = process.env.R2_PUBLIC_DEVELOP as string;
 const R2_BUCKET = process.env.R2_BUCKET as string;
 const RPC_URL = process.env.RPC_URL as string;
 const POOL_CONFIG_KEY = process.env.POOL_CONFIG_KEY as string;
@@ -15,6 +16,7 @@ if (
   !R2_ACCESS_KEY_ID ||
   !R2_SECRET_ACCESS_KEY ||
   !R2_ACCOUNT_ID ||
+  !R2_PUBLIC_DEVELOP ||
   !R2_BUCKET ||
   !RPC_URL ||
   !POOL_CONFIG_KEY
@@ -23,7 +25,7 @@ if (
 }
 
 const PRIVATE_R2_URL = `https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
-const PUBLIC_R2_URL = 'https://pub-85c7f5f0dc104dc784e656b623d999e5.r2.dev';
+const PUBLIC_R2_URL = `https://${R2_PUBLIC_DEVELOP}.r2.dev`;
 
 // Types
 type UploadRequest = {
@@ -32,12 +34,16 @@ type UploadRequest = {
   tokenSymbol: string;
   mint: string;
   userWallet: string;
+  website: string;
+  twitter: string;
 };
 
 type Metadata = {
   name: string;
   symbol: string;
   image: string;
+  website: string;
+  twitter: string;
 };
 
 type MetadataUploadParams = {
@@ -45,6 +51,8 @@ type MetadataUploadParams = {
   tokenSymbol: string;
   mint: string;
   image: string;
+  website: string;
+  twitter: string;
 };
 
 // R2 client setup
@@ -62,7 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { tokenLogo, tokenName, tokenSymbol, mint, userWallet } = req.body as UploadRequest;
+    const { tokenLogo, tokenName, tokenSymbol, mint, userWallet, website, twitter} = req.body as UploadRequest;
 
     // Validate required fields
     if (!tokenLogo || !tokenName || !tokenSymbol || !mint || !userWallet) {
@@ -75,7 +83,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'Failed to upload image' });
     }
 
-    const metadataUrl = await uploadMetadata({ tokenName, tokenSymbol, mint, image: imageUrl });
+    const metadataUrl = await uploadMetadata({ tokenName, tokenSymbol, mint, image: imageUrl, website, twitter });
     if (!metadataUrl) {
       return res.status(400).json({ error: 'Failed to upload metadata' });
     }
@@ -133,6 +141,8 @@ async function uploadMetadata(params: MetadataUploadParams): Promise<string | fa
     name: params.tokenName,
     symbol: params.tokenSymbol,
     image: params.image,
+    website: params.website,
+    twitter: params.twitter,
   };
   const fileName = `metadata/${params.mint}.json`;
 
